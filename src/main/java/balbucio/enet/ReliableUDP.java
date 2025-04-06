@@ -19,10 +19,14 @@ public abstract class ReliableUDP {
     protected Map<Integer, Long> packetTimers = new ConcurrentHashMap<>();
     protected final int TIMEOUT_MS = 500;
 
+    public ReliableUDP(int port, ScheduledExecutorService executor) throws Exception {
+        this.socket = new DatagramSocket(port);
+        executor.submit(this::receiveLoop);
+        executor.scheduleAtFixedRate(this::resendLoop, 500, 200, TimeUnit.MILLISECONDS);
+    }
+
     public ReliableUDP(int port) throws Exception {
-        socket = new DatagramSocket(port);
-        Executors.newSingleThreadExecutor().execute(this::receiveLoop);
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(this::resendLoop, 500, 200, TimeUnit.MILLISECONDS);
+        this(port, Executors.newScheduledThreadPool(1));
     }
 
     protected abstract void onReceive(byte[] data);
@@ -30,10 +34,10 @@ public abstract class ReliableUDP {
     public void send(byte[] data) throws Exception {
         if (peerAddress == null) return;
         byte[] packet = new byte[data.length + 4];
-        packet[0] = (byte)(sequenceId >> 24);
-        packet[1] = (byte)(sequenceId >> 16);
-        packet[2] = (byte)(sequenceId >> 8);
-        packet[3] = (byte)(sequenceId);
+        packet[0] = (byte) (sequenceId >> 24);
+        packet[1] = (byte) (sequenceId >> 16);
+        packet[2] = (byte) (sequenceId >> 8);
+        packet[3] = (byte) (sequenceId);
         System.arraycopy(data, 0, packet, 4, data.length);
 
         DatagramPacket datagram = new DatagramPacket(packet, packet.length, peerAddress, peerPort);
