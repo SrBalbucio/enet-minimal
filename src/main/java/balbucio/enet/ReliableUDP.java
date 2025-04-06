@@ -1,5 +1,9 @@
 package balbucio.enet;
 
+import org.msgpack.core.MessagePack;
+import org.msgpack.core.MessagePacker;
+
+import java.io.ByteArrayOutputStream;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -38,6 +42,17 @@ public abstract class ReliableUDP {
         pendingPackets.put(sequenceId, packet);
         packetTimers.put(sequenceId, System.currentTimeMillis());
         sequenceId++;
+    }
+
+    public void sendMessage(MsgPackCreator creator) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        MessagePacker packer = MessagePack.newDefaultPacker(out);
+        creator.createMessage(packer);
+        packer.flush();
+        out.flush();
+        send(out.toByteArray());
+        packer.close();
+        out.close();
     }
 
     private void receiveLoop() {
