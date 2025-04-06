@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>balbucio.enet</groupId>
+    <artifactId>ENet-minimal</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>ENet-like Minimal</name>
+    <description>Minimal straight-to-the-point Java version of Enet. This port is not designed to support every protocol, just process the basics of the request.</description>
+
+    <repositories>
+        <repository>
+            <id>hyperpowered-maven-releases</id>
+            <name>HyperPowered Maven Repository</name>
+            <url>https://maven.hyperpowered.net/releases</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>hyperpowered-maven-releases</id>
+            <name>HyperPowered Maven Repository</name>
+            <url>https://maven.hyperpowered.net/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>hyperpowered-maven-snapshots</id>
+            <name>HyperPowered Maven Repository</name>
+            <url>https://maven.hyperpowered.net/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
